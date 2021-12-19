@@ -6,7 +6,37 @@ namespace TReminder.Models
     {
         private RepetitionSchema _repetitionSchema;
 
-        public Reminder(string name, IntervalType interval)
+        private DateTime _triggerTime;
+
+        private string _notation;
+
+        public Reminder(string name, IntervalType interval, DateTime triggerTime, string notation = null)
+        {
+            Validate(name, triggerTime);
+
+            _triggerTime = triggerTime;
+
+            _notation = notation;
+
+            var preparedName = name.Trim();
+            Name = preparedName;
+
+            _repetitionSchema = new RepetitionSchema(interval);
+        }
+
+        public string Name { get; init; }
+
+        public string Notation
+        {
+            get => _notation == null ? "" : _notation.Trim();
+            init => _notation = value;
+        }
+
+        public DateTime TriggerTime => _triggerTime;
+
+        public IntervalType IntervalType => _repetitionSchema.IntervalType;
+
+        private void Validate(string name, DateTime triggerTime)
         {
             var wrongNameException = new ArgumentException("Name can't be empty");
 
@@ -15,15 +45,8 @@ namespace TReminder.Models
             else if (string.IsNullOrWhiteSpace(name))
                 throw wrongNameException;
 
-            var preparedName = name.Trim();
-
-            Name = preparedName;
-
-            _repetitionSchema = new RepetitionSchema(interval);
+            if (triggerTime < DateTime.Now)
+                throw new ArgumentException("Specified time is invalid");
         }
-
-        public string Name { get; init; }
-
-        public string Notation { get; init; }
     }
 }
