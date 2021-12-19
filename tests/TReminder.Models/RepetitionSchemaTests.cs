@@ -10,21 +10,20 @@ namespace TReminder.Tests.Models
         public void CanNotBeInvariant()
         {
             // Assert
-            var schema = new RepetitionSchema(IntervalType.PerWeek, 3);
+            var schema = new RepetitionSchema(IntervalType.PerWeek);
 
             Assert.Equal(IntervalType.PerWeek, schema.IntervalType);
-            Assert.Equal(3, schema.AmountPerInterval);
 
             Assert.Throws<ArgumentException>(
-                () => { new RepetitionSchema(IntervalType.PerDay, 0); }
+                () => { new RepetitionSchema(IntervalType.PerDay); }
             );
 
             Assert.Throws<ArgumentException>(
-                () => { new RepetitionSchema(IntervalType.PerMonth, -1); }
+                () => { new RepetitionSchema(IntervalType.PerMonth); }
             );
 
             Assert.Throws<ArgumentException>(
-                () => { new RepetitionSchema(IntervalType.PerWeek, int.MinValue); }
+                () => { new RepetitionSchema(IntervalType.PerWeek); }
             );
         }
     }

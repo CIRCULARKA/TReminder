@@ -10,19 +10,19 @@ namespace TReminder.Tests.Models
         public void CanNotBeInvariant()
         {
             Assert.Throws<ArgumentException>(
-                () => { new Reminder("", IntervalType.PerDay, 0); }
+                () => { new Reminder("", IntervalType.PerDay); }
             );
 
             Assert.Throws<ArgumentException>(
-                () => { new Reminder("     ", IntervalType.PerDay, 0); }
+                () => { new Reminder("     ", IntervalType.PerDay); }
             );
 
             Assert.Throws<ArgumentException>(
-                () => { new Reminder(null, IntervalType.PerDay, 0); }
+                () => { new Reminder(null, IntervalType.PerDay); }
             );
 
             Assert.Throws<ArgumentException>(
-                () => { new Reminder("Workout", IntervalType.PerDay, -1); }
+                () => { new Reminder("Workout", IntervalType.PerDay); }
             );
         }
     }
