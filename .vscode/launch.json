@@ -1,0 +1,16 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": ".NET Core Launch (console)",
+			"type": "coreclr",
+			"request": "launch",
+			"preLaunchTask": "Build: Server",
+			"program": "${workspaceFolder}/src/TReminder/bin/Debug/net5.0/TReminder.dll",
+			"args": [],
+			"cwd": "${workspaceFolder}/src/TReminder",
+			"console": "internalConsole",
+			"stopAtEntry": false
+		}
+	]
+}
