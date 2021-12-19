@@ -12,8 +12,12 @@ namespace TReminder.Models
 
             if (name == null)
                 throw wrongNameException;
-            else if (name.Length <= 0)
+            else if (string.IsNullOrWhiteSpace(name))
                 throw wrongNameException;
+
+            var preparedName = name.Trim();
+
+            Name = preparedName;
 
             _repetitionSchema = new RepetitionSchema(interval, amountPerInterval);
         }
