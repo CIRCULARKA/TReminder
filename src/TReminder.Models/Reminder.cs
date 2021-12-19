@@ -14,9 +14,8 @@ namespace TReminder.Models
         {
             Validate(name, triggerTime);
 
-            _triggerTime = triggerTime;
-
             _notation = notation;
+            _triggerTime = triggerTime;
 
             var preparedName = name.Trim();
             Name = preparedName;
@@ -26,15 +25,15 @@ namespace TReminder.Models
 
         public string Name { get; init; }
 
+        public IntervalType IntervalType => _repetitionSchema.IntervalType;
+
+        public DateTime TriggerTime => _triggerTime;
+
         public string Notation
         {
             get => _notation == null ? "" : _notation.Trim();
             init => _notation = value;
         }
-
-        public DateTime TriggerTime => _triggerTime;
-
-        public IntervalType IntervalType => _repetitionSchema.IntervalType;
 
         private void Validate(string name, DateTime triggerTime)
         {
