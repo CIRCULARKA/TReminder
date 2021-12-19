@@ -37,6 +37,21 @@
 				"clear": true
 			},
 			"problemMatcher": []
+		},
+		{
+			"label": "Run: Server",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"run",
+				"--project",
+				"${workspaceFolder}/src/TReminder"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"problemMatcher": []
 		}
 	]
 }
