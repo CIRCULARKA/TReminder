@@ -20,10 +20,6 @@ namespace TReminder.Tests.Models
             Assert.Throws<ArgumentException>(
                 () => { new Reminder(null, IntervalType.PerDay); }
             );
-
-            Assert.Throws<ArgumentException>(
-                () => { new Reminder("Workout", IntervalType.PerDay); }
-            );
         }
     }
 }

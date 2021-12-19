@@ -11,5 +11,32 @@
 			],
 			"problemMatcher": "$msCompile"
 		},
+		{
+			"label": "Watch: Models Tests",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"watch",
+				"--project",
+				"${workspaceFolder}/src/TReminder.Models/TReminder.Models.csproj",
+				"test",
+				"${workspaceFolder}/tests/TReminder.Tests.Models/TReminder.Tests.Models.csproj",
+				"-o",
+				"${workspaceFolder}/tests/TReminder.Tests.Models/out"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"presentation": {
+				"echo": false,
+				"reveal": "silent",
+				"focus": false,
+				"panel": "new",
+				"showReuseMessage": false,
+				"clear": true
+			},
+			"problemMatcher": []
+		}
 	]
 }
