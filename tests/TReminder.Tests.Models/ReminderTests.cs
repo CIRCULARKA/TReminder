@@ -10,11 +10,12 @@ namespace TReminder.Tests.Models
         public void CanNotBeInvariant()
         {
             var triggerTime = DateTime.Now + new TimeSpan(hours: 1, 0, 0);
-            var reminder = new Reminder("Workout", IntervalType.PerDay, triggerTime);
+            var reminder = new Reminder("Workout", IntervalType.PerDay, triggerTime, "Notation");
 
             Assert.Equal("Workout", reminder.Name);
             Assert.Equal(triggerTime.ToShortDateString(), reminder.TriggerTime.ToShortDateString());
             Assert.Equal(IntervalType.PerDay, reminder.IntervalType);
+            Assert.Equal("Notation", reminder.Notation);
 
             Assert.Throws<ArgumentException>(
                 () => { new Reminder("", IntervalType.PerDay, DateTime.Now); }
