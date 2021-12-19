@@ -1,3 +1,5 @@
+using System;
+
 namespace TReminder.Models
 {
     public class Reminder
@@ -6,9 +8,14 @@ namespace TReminder.Models
 
         public Reminder(string name, IntervalType interval, int amountPerInterval)
         {
-            _repetitionSchema = new RepetitionSchema {
-                IntervalType = interval, AmountPerInterval = amountPerInterval
-            };
+            var wrongNameException = new ArgumentException("Name can't be empty");
+
+            if (name == null)
+                throw wrongNameException;
+            else if (name.Length <= 0)
+                throw wrongNameException;
+
+            _repetitionSchema = new RepetitionSchema(interval, amountPerInterval);
         }
 
         public string Name { get; init; }
