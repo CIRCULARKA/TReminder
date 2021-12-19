@@ -6,7 +6,7 @@ namespace TReminder.Models
     {
         private RepetitionSchema _repetitionSchema;
 
-        public Reminder(string name, IntervalType interval, int amountPerInterval)
+        public Reminder(string name, IntervalType interval)
         {
             var wrongNameException = new ArgumentException("Name can't be empty");
 
@@ -19,7 +19,7 @@ namespace TReminder.Models
 
             Name = preparedName;
 
-            _repetitionSchema = new RepetitionSchema(interval, amountPerInterval);
+            _repetitionSchema = new RepetitionSchema(interval);
         }
 
         public string Name { get; init; }
