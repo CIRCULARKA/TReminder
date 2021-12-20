@@ -10,6 +10,7 @@ using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using TReminder.Application.Messaging;
 using TReminder.Application.Logging;
+using TReminder.Application.Commands;
 
 namespace TReminder.Application.Bot
 {

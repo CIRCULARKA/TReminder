@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Telegram.Bot.Types;
 
-namespace TReminder.Application.Bot
+namespace TReminder.Application.Commands
 {
     public class CommandsProvider : ICommandsProvider
     {
