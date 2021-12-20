@@ -9,5 +9,7 @@ namespace TReminder.Application.Messaging
         public string YourMessageIsTooLong { get; init; }
 
         public string ChooseAnAction { get; init; }
+
+        public string NewReminder { get; init; }
     }
 }

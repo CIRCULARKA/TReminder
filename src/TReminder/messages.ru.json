@@ -2,5 +2,6 @@
 	"SomethingWentWrong": "Что-то пошло не так",
 	"YouSentTheMessage": "Ты отправил сообщение",
 	"YourMessageIsTooLong": "Слишком длинное сообщение",
-	"ChooseAnAction": "Выбери действие"
+	"ChooseAnAction": "Выбери действие",
+	"NewReminder": "Создать напоминание"
 }
