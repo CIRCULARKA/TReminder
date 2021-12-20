@@ -1,4 +1,4 @@
-namespace TReminder.Application
+namespace TReminder.Application.Messaging
 {
     public class Messages
     {

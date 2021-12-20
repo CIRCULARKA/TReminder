@@ -1,8 +1,8 @@
 using System;
 using System.Text.Json;
 using System.IO;
-using TReminder.Application;
 using Xunit;
+using TReminder.Application.Messaging;
 
 namespace TReminder.Tests.Application
 {

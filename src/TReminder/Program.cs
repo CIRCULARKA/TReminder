@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
-using TReminder.Application;
+using TReminder.Application.Messaging;
 
 namespace TReminder
 {

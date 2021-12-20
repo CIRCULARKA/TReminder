@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text.Json;
 
-namespace TReminder.Application
+namespace TReminder.Application.Messaging
 {
     public class MessagesProvider
     {
