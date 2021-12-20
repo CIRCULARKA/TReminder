@@ -72,7 +72,7 @@ namespace TReminder.Application.Messaging
         private void ValidateLanguageCode()
         {
             var exception = new ArgumentException(
-                $"Unsupported language code. (\"{_currentLanguageCode}\" passed)"
+                $"Lanugage code can not be null"
             );
 
             if (_currentLanguageCode == null)
@@ -82,7 +82,8 @@ namespace TReminder.Application.Messaging
                 if (string.Compare(_currentLanguageCode, code, ignoreCase: true) == 0)
                     return;
 
-            throw exception;
+            // If there is no matching lang code then just switch it to "en"
+            _currentLanguageCode = "en";
         }
     }
 }
