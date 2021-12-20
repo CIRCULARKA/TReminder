@@ -6,8 +6,6 @@ namespace TReminder.Application
 {
     public class MessagesProvider
     {
-        private Messages _messages;
-
         /// <summary>
         /// Gets messages from messages.{langCode}.json from root of the assembly by default
         /// </summary>
