@@ -1,8 +1,10 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using Telegram.Bot;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.ReplyMarkups;
 using Telegram.Bot.Types.Enums;
 using TReminder.Application.Messaging;
 using TReminder.Application.Logging;
@@ -47,6 +49,8 @@ namespace TReminder.Application.Bot
             var incomingMessage = update.Message.Text;
             var langCode = update.Message.From.LanguageCode;
 
+            _messagesProvider.ChangeLanguage(langCode);
+
             try
             {
                 if (update.Type != UpdateType.Message)
@@ -58,13 +62,19 @@ namespace TReminder.Application.Bot
                 if (update.Message.Text.Length >= _maxMessageSize)
                     return;
 
-                var upcomingMessage = _messagesProvider.GetMessage(
-                    update.Message.From.LanguageCode, $"{nameof(Messages.YouSentTheMessage)}"
-                ) + $": \"{update.Message.Text}\"";
+                var upcomingMessage = _messagesProvider[nameof(Messages.ChooseAnAction)];
+
+                var replyMarkup = new ReplyKeyboardMarkup(
+                    new List<KeyboardButton> {
+                        new KeyboardButton(_messagesProvider[nameof(Messages.NewReminder)]),
+                        new KeyboardButton(_messagesProvider[nameof(Messages.EditReminder)])
+                    }
+                ) { ResizeKeyboard = true };
 
                 await client.SendTextMessageAsync(
                     chatId: incomingChatId,
                     text: upcomingMessage,
+                    replyMarkup: replyMarkup,
                     cancellationToken: ct
                 );
             }
@@ -74,7 +84,7 @@ namespace TReminder.Application.Bot
 
                 await client.SendTextMessageAsync(
                     chatId: incomingChatId,
-                    text:  _messagesProvider.GetMessage(langCode, nameof(Messages.SomethingWentWrong))
+                    text:  _messagesProvider[nameof(Messages.SomethingWentWrong)]
                 );
             }
         }
