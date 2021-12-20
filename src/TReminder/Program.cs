@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,11 +12,23 @@ namespace TReminder
 {
     class Program
     {
+        private static string _pathToLogs = "logs";
+
         static async Task Main(string[] args)
         {
-            var client = CreateBotClient();
-            await ConfigureBotCommandsAsync(client);
-            StartBotClient(client);
+            try
+            {
+                throw new Exception("sf");
+
+                var client = CreateBotClient();
+                await ConfigureBotCommandsAsync(client);
+                StartBotClient(client);
+
+            }
+            catch (Exception e)
+            {
+                LogException(FormatExceptionInformation(e));
+            }
 
             Console.ReadLine();
         }
@@ -42,18 +56,7 @@ namespace TReminder
 
         public static Task HandleError(ITelegramBotClient client, Exception exception, CancellationToken token)
         {
-            System.IO.File.AppendAllLines(
-                $"logs/{DateTime.Now}.txt",
-                new string[] {
-                    $"[{DateTime.Now.ToString("HH:mm MMMM dd, yyyy")}]",
-                    $"Message: {exception.Message}",
-                    $"Assembly: {exception.Source}",
-                    $"Method: {exception.TargetSite}",
-                    exception.InnerException == null ? "No inner exception" : $"Inner exception message: {exception.InnerException.Message}",
-                    $"Stack trace:\n {exception.StackTrace}",
-                    "\n"
-                }
-            );
+            LogException(FormatExceptionInformation(exception));
 
             Console.WriteLine($"Something went wrong. Error was logged in root of the application");
 
@@ -92,6 +95,27 @@ namespace TReminder
 
             await client.SetMyCommandsAsync(englishCommands, languageCode: "en");
             await client.SetMyCommandsAsync(russianCommands, languageCode: "ru");
+        }
+
+        private static void LogException(IEnumerable<string> lines)
+        {
+            System.IO.File.AppendAllLines(
+                Path.Combine(_pathToLogs, $"{DateTime.Now.Day}_{DateTime.Now.Month}_{DateTime.Now.Year}.txt"),
+                lines
+            );
+        }
+
+        private static IEnumerable<string> FormatExceptionInformation(Exception e)
+        {
+            return new string[] {
+                $"[{DateTime.Now.ToString("HH:mm MMMM dd, yyyy")}]",
+                $"Message: {e.Message}",
+                $"Assembly: {e.Source}",
+                $"Method: {e.TargetSite}",
+                e.InnerException == null ? "No inner exception" : $"Inner exception message: {e.InnerException.Message}",
+                $"Stack trace:\n {e.StackTrace}",
+                "\n"
+            };
         }
     }
 }
