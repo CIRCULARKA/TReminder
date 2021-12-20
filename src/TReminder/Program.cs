@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using System.Reflection;
+using System.Configuration;
 using System.IO;
 using System.Collections.Generic;
 using System.Text.Json;
@@ -75,12 +75,9 @@ namespace TReminder
 
         private static ITelegramBotClient CreateBotClient()
         {
-            var apiKey = JsonSerializer.Deserialize<AppConfiguration>(
-                System.IO.File.ReadAllText("config.json"),
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
-            ).ApiKey;
+            var api = ConfigurationManager.AppSettings["apiKey"];
 
-            return new TelegramBotClient(apiKey);
+            return new TelegramBotClient(api);
         }
 
         private static void StartBotClient(ITelegramBotClient client)
