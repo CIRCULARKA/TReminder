@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace TReminder.Application.Bot
+namespace TReminder.Application.Logging
 {
     public class TextExceptionLogger : IExceptionLogger
     {
@@ -22,11 +22,11 @@ namespace TReminder.Application.Bot
         private string FormatExceptionInformation(Exception e)
         {
             return $"[{DateTime.Now.ToString("HH:mm MMMM dd, yyyy")}]\n" +
-                $"Message: {e.Message}\n" +
-                $"Assembly: {e.Source}\n" +
-                $"Method: {e.TargetSite}\n" +
-                e.InnerException == null ? "No inner exception" : $"Inner exception message: {e.InnerException.Message}\n" +
-                $"Stack trace:\n {e.StackTrace}\n\n";
+                "Message: " + (e.Message == null ? "No information\n" : e.Message + "\n") +
+                "Assembly: " + (e.Source == null ? "No information\n" : e.Source + "\n") +
+                "Method: " + (e.TargetSite == null ? "No information\n" : e.TargetSite + "\n") +
+                (e.InnerException == null ? "No inner exception\n" : $"Inner exception message: {e.InnerException.Message}\n") +
+                "Stack trace: " + (e.StackTrace == null ? "No information\n\n" : $"\n{e.StackTrace}" + "\n\n");
         }
     }
 }
