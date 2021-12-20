@@ -23,8 +23,10 @@ namespace TReminder.Tests.Application
             ).YouSentTheMessage;
 
             // Act
-            var russianActual = provider.GetMessage("ru", nameof(Messages.YouSentTheMessage));
-            var englishActual = provider.GetMessage("en", nameof(Messages.YouSentTheMessage));
+            provider.ChangeLanguage("ru");
+            var russianActual = provider[nameof(Messages.YouSentTheMessage)];
+            provider.ChangeLanguage("en");
+            var englishActual = provider[nameof(Messages.YouSentTheMessage)];
 
             // Assert
             Assert.Equal(russianExpected, russianActual);
