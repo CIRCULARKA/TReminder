@@ -3,8 +3,6 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Telegram.Bot;
-using Telegram.Bot.Extensions;
-using Telegram.Bot.Extensions.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 
@@ -16,25 +14,9 @@ namespace TReminder
 
         static async Task Main(string[] args)
         {
-            var apiKey = JsonSerializer.Deserialize<AppConfiguration>(
-                System.IO.File.ReadAllText("config.json"),
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
-            ).ApiKey;
-
-            var client = new TelegramBotClient(apiKey);
-
+            var client = CreateBotClient();
             await ConfigureBotCommandsAsync(client);
-
-            using var cts = new CancellationTokenSource();
-
-            var receiverOptions = new ReceiverOptions {  };
-
-            client.StartReceiving(
-                HandleUpdate,
-                HandleError,
-                receiverOptions: receiverOptions,
-                cancellationToken: cts.Token
-            );
+            StartBotClient(client);
 
             Console.ReadLine();
         }
@@ -75,9 +57,27 @@ namespace TReminder
                 }
             );
 
-            Console.WriteLine($"Something went wrong: {exception.ToString()}");
+            Console.WriteLine($"Something went wrong. Error was logged in root of the application");
 
             return Task.CompletedTask;
+        }
+
+        private static ITelegramBotClient CreateBotClient()
+        {
+            var apiKey = JsonSerializer.Deserialize<AppConfiguration>(
+                System.IO.File.ReadAllText("config.json"),
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
+            ).ApiKey;
+
+            return new TelegramBotClient(apiKey);
+        }
+
+        private static void StartBotClient(ITelegramBotClient client)
+        {
+            client.StartReceiving(
+                HandleUpdate,
+                HandleError
+            );
         }
 
         private async static Task ConfigureBotCommandsAsync(ITelegramBotClient client)
