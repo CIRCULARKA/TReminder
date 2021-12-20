@@ -22,14 +22,18 @@ namespace TReminder.Application.Bot
 
         private readonly IExceptionLogger _exceptionLogger;
 
+        private readonly IMessagesProvider _messagesProvider;
+
         public Bot(
             ITelegramBotClient client,
             ICommandsProvider commandsProvider,
-            IExceptionLogger exceptionLogger)
+            IExceptionLogger exceptionLogger,
+            IMessagesProvider messagesProvider)
         {
             _client = client;
             _commandsProvider = commandsProvider;
             _exceptionLogger = exceptionLogger;
+            _messagesProvider = messagesProvider;
         }
 
         public void Start()
