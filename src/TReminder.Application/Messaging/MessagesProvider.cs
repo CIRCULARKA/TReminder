@@ -25,6 +25,11 @@ namespace TReminder.Application.Messaging
             _messages = LoadMessagesForLanguages();
         }
 
+        public string this[string messageName]
+        {
+            get => GetMessage(messageName);
+        }
+
         public void ChangeLanguage(string languageCode)
         {
             if (languageCode == null)
