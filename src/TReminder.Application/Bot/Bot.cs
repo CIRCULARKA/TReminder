@@ -43,34 +43,47 @@ namespace TReminder.Application.Bot
 
         private async Task HandleCommand(ITelegramBotClient client, Update update, CancellationToken ct)
         {
-            if (update.Type != UpdateType.Message)
-                return;
-
-            if (update.Message!.Type != MessageType.Text)
-                return;
-
             var incomingChatId = update.Message.Chat.Id;
             var incomingMessage = update.Message.Text;
-
             var langCode = update.Message.From.LanguageCode;
 
-            if (update.Message.Text.Length >= _maxMessageSize)
-                return;
+            try
+            {
+                if (update.Type != UpdateType.Message)
+                    return;
 
-            var upcomingMessage = _messagesProvider.GetMessage(
-                update.Message.From.LanguageCode, $"{nameof(Messages.YouSentTheMessage)}"
-            ) + $": \"{update.Message.Text}\"";
+                if (update.Message!.Type != MessageType.Text)
+                    return;
 
-            await client.SendTextMessageAsync(
-                chatId: incomingChatId,
-                text: upcomingMessage,
-                cancellationToken: ct
-            );
+                if (update.Message.Text.Length >= _maxMessageSize)
+                    return;
+
+                var upcomingMessage = _messagesProvider.GetMessage(
+                    update.Message.From.LanguageCode, $"{nameof(Messages.YouSentTheMessage)}"
+                ) + $": \"{update.Message.Text}\"";
+
+                await client.SendTextMessageAsync(
+                    chatId: incomingChatId,
+                    text: upcomingMessage,
+                    cancellationToken: ct
+                );
+            }
+            catch (Exception e)
+            {
+                _exceptionLogger.LogException(e);
+
+                await client.SendTextMessageAsync(
+                    chatId: incomingChatId,
+                    text:  _messagesProvider.GetMessage(langCode, nameof(Messages.SomethingWentWrong))
+                );
+            }
         }
 
         private Task HandleException(ITelegramBotClient client, Exception e, CancellationToken ct)
         {
             _exceptionLogger.LogException(e);
+
+            this.Start();
 
             return Task.CompletedTask;
         }
