@@ -11,5 +11,9 @@ namespace TReminder.Application.Messaging
         public string ChooseAnAction { get; init; }
 
         public string NewReminder { get; init; }
+
+        public string EditReminder { get; init; }
+
+        public string ChooseAReminder { get; init; }
     }
 }

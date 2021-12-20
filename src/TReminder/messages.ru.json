@@ -3,5 +3,7 @@
 	"YouSentTheMessage": "Ты отправил сообщение",
 	"YourMessageIsTooLong": "Слишком длинное сообщение",
 	"ChooseAnAction": "Выбери действие",
-	"NewReminder": "Создать напоминание"
+	"NewReminder": "Создать напоминание",
+	"EditReminder": "Изменить напоминание",
+	"ChooseAReminder": "Выбери напоминание"
 }
