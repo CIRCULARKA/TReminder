@@ -43,8 +43,6 @@ namespace TReminder.Application.Bot
 
         private async Task HandleCommand(ITelegramBotClient client, Update update, CancellationToken ct)
         {
-            throw new Exception("exc");
-
             if (update.Type != UpdateType.Message)
                 return;
 
