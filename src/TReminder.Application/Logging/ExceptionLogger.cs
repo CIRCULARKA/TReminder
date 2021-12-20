@@ -12,6 +12,11 @@ namespace TReminder.Application.Logging
             _writer = writer;
         }
 
+        ~TextExceptionLogger()
+        {
+            _writer.Dispose();
+        }
+
         public void LogException(Exception e)
         {
             _writer.Write(
