@@ -10,8 +10,8 @@
   </ItemGroup>
 
   <Target Name="CopyMessageContents" AfterTargets="AfterBuild">
-    <Copy SourceFiles="messages.ru.json" DestinationFolder="$(OutDir)" />
-    <Copy SourceFiles="messages.en.json" DestinationFolder="$(OutDir)" />
+    <Copy SourceFiles="messages.ru.json" DestinationFolder="$(OutDir)/publish" />
+    <Copy SourceFiles="messages.en.json" DestinationFolder="$(OutDir)/publish" />
   </Target>
 
 </Project>
