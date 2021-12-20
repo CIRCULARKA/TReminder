@@ -20,7 +20,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\TReminder.Models\TReminder.Models.csproj" />
+    <ProjectReference Include="..\src\TReminder.Application\TReminder.Application.csproj" />
+    <ProjectReference Include="..\src\TReminder.Models\TReminder.Models.csproj" />
+  </ItemGroup>
+
+  <Target Name="CopyMessageContents" AfterTargets="AfterBuild">
+    <Copy SourceFiles="TReminder.Tests.Application/test-messages.en.json" DestinationFolder="$(OutDir)" />
+    <Copy SourceFiles="TReminder.Tests.Application/test-messages.ru.json" DestinationFolder="$(OutDir)" />
+  </Target>
+
+  <ItemGroup>
+    <Watch Include="../src/TReminder.Models/**/*.cs"></Watch>
+    <Watch Include="../src/TReminder.Application/**/*.cs"></Watch>
   </ItemGroup>
 
 </Project>

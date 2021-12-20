@@ -4,7 +4,7 @@
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
 # User-specific files
-[Cc]onfig.json
+[Aa]pp.config
 [Oo]ut/
 *.rsuser
 *.suo
