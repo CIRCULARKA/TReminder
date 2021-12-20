@@ -10,8 +10,6 @@ namespace TReminder
 {
     class Program
     {
-        private static readonly string _pathToLogsFile = "logs";
-
         static async Task Main(string[] args)
         {
             var client = CreateBotClient();
