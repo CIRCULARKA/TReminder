@@ -24,6 +24,10 @@ namespace TReminder.Application.Bot
 
         private readonly IMessagesProvider _messagesProvider;
 
+        private long? _currentChatId;
+
+        private string _currentMessage;
+
         public Bot(
             ITelegramBotClient client,
             ICommandsProvider commandsProvider,
@@ -45,34 +49,34 @@ namespace TReminder.Application.Bot
 
         private async Task HandleCommand(ITelegramBotClient client, Update update, CancellationToken ct)
         {
-            var incomingChatId = update.Message.Chat.Id;
-            var incomingMessage = update.Message.Text;
-            var langCode = update.Message.From.LanguageCode;
-
-            _messagesProvider.ChangeLanguage(langCode);
+            _currentChatId = update.Message?.Chat?.Id;
+            _currentMessage = update.Message?.Text;
+            var langCode = update.Message?.From?.LanguageCode;
 
             try
             {
+                _messagesProvider.ChangeLanguage(langCode);
+
                 if (update.Type != UpdateType.Message)
                     return;
 
-                if (update.Message!.Type != MessageType.Text)
-                    return;
-
-                if (update.Message.Text.Length >= _maxMessageSize)
+                if (_currentMessage != null)
+                    if (_currentMessage.Length >= _maxMessageSize)
                     return;
 
                 var upcomingMessage = _messagesProvider[nameof(Messages.ChooseAnAction)];
 
-                var replyMarkup = new ReplyKeyboardMarkup(
-                    new List<KeyboardButton> {
-                        new KeyboardButton(_messagesProvider[nameof(Messages.NewReminder)]),
-                        new KeyboardButton(_messagesProvider[nameof(Messages.EditReminder)])
+                var replyMarkup = new InlineKeyboardMarkup(
+                    new List<InlineKeyboardButton> {
+                        InlineKeyboardButton.WithCallbackData(_messagesProvider[nameof(Messages.NewReminder)], "testcallback"),
+                        InlineKeyboardButton.WithCallbackData(_messagesProvider[nameof(Messages.EditReminder)], "testcallback1"),
+                        // new InlineKeyboardButton(_messagesProvider[nameof(Messages.NewReminder)]),
+                        // new InlineKeyboardButton(_messagesProvider[nameof(Messages.EditReminder)])
                     }
-                ) { ResizeKeyboard = true };
+                );
 
                 await client.SendTextMessageAsync(
-                    chatId: incomingChatId,
+                    chatId: _currentChatId,
                     text: upcomingMessage,
                     replyMarkup: replyMarkup,
                     cancellationToken: ct
@@ -83,7 +87,7 @@ namespace TReminder.Application.Bot
                 _exceptionLogger.LogException(e);
 
                 await client.SendTextMessageAsync(
-                    chatId: incomingChatId,
+                    chatId: _currentChatId,
                     text:  _messagesProvider[nameof(Messages.SomethingWentWrong)]
                 );
             }
