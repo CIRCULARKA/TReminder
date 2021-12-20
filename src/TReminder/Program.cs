@@ -3,7 +3,6 @@ using System.Linq;
 using System.Configuration;
 using System.IO;
 using System.Collections.Generic;
-using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Telegram.Bot;
