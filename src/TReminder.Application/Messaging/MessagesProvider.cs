@@ -36,8 +36,11 @@ namespace TReminder.Application.Messaging
                 throw new ArgumentException("Language code can't be null");
 
             foreach (var code in _supportedLanguageCodes)
-                if (string.Compare(_currentLanguageCode, code, ignoreCase: true) == 0)
+                if (string.Compare(languageCode, code, ignoreCase: true) == 0)
+                {
                     _currentLanguageCode = code;
+                    return;
+                }
 
             // If there is no matching lang code then just switch it to "en"
             _currentLanguageCode = "en";
