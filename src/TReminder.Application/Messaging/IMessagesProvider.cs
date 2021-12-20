@@ -2,6 +2,11 @@ namespace TReminder.Application.Messaging
 {
     public interface IMessagesProvider
     {
-        string GetMessage(string langCode, string messageName);
+        /// <summary>
+        /// Default is "en"
+        /// </summary>
+        void ChangeLanguage(string languageCode);
+
+        string GetMessage(string messageName);
     }
 }

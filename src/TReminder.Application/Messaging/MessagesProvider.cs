@@ -25,18 +25,27 @@ namespace TReminder.Application.Messaging
             _messages = LoadMessagesForLanguages();
         }
 
-        public string GetMessage(string langCode, string messageName)
+        public void ChangeLanguage(string languageCode)
         {
-            _currentLanguageCode = langCode;
+            if (languageCode == null)
+                throw new ArgumentException("Language code can't be null");
 
-            ValidateLanguageCode();
+            foreach (var code in _supportedLanguageCodes)
+                if (string.Compare(_currentLanguageCode, code, ignoreCase: true) == 0)
+                    _currentLanguageCode = code;
 
+            // If there is no matching lang code then just switch it to "en"
+            _currentLanguageCode = "en";
+        }
+
+        public string GetMessage(string messageName)
+        {
             try
             {
                 var targetProperty = Type.GetType(typeof(Messages).AssemblyQualifiedName).
                     GetProperties().Single(p => p.Name == messageName);
 
-                return targetProperty.GetValue(_messages[langCode]) as string;
+                return targetProperty.GetValue(_messages[_currentLanguageCode]) as string;
             }
             catch (InvalidOperationException)
             {
@@ -67,23 +76,6 @@ namespace TReminder.Application.Messaging
             }
 
             return result;
-        }
-
-        private void ValidateLanguageCode()
-        {
-            var exception = new ArgumentException(
-                $"Lanugage code can not be null"
-            );
-
-            if (_currentLanguageCode == null)
-                throw exception;
-
-            foreach (var code in _supportedLanguageCodes)
-                if (string.Compare(_currentLanguageCode, code, ignoreCase: true) == 0)
-                    return;
-
-            // If there is no matching lang code then just switch it to "en"
-            _currentLanguageCode = "en";
         }
     }
 }
