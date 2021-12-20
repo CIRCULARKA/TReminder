@@ -18,10 +18,16 @@ namespace TReminder.Application.Bot
 
         private readonly ICommandsProvider _commandsProvider;
 
-        public Bot(ITelegramBotClient client, ICommandsProvider commandsProvider)
+        private readonly IExceptionLogger _exceptionLogger;
+
+        public Bot(
+            ITelegramBotClient client,
+            ICommandsProvider commandsProvider,
+            IExceptionLogger exceptionLogger)
         {
             _client = client;
             _commandsProvider = commandsProvider;
+            _exceptionLogger = exceptionLogger;
         }
 
         public void Start()
