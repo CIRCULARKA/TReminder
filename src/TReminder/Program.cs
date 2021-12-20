@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Reflection;
 using System.IO;
 using System.Collections.Generic;
 using System.Text.Json;
@@ -7,6 +9,7 @@ using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
+using TReminder.Application;
 
 namespace TReminder
 {
@@ -14,10 +17,16 @@ namespace TReminder
     {
         private static string _pathToLogs = "logs";
 
+        private static MessagesProvider _englishMessages;
+
+        private static MessagesProvider _russianMessages;
+
         static async Task Main(string[] args)
         {
             try
             {
+                InitializeMessagesProviders();
+
                 var client = CreateBotClient();
                 await ConfigureBotCommandsAsync(client);
                 StartBotClient(client);
@@ -42,8 +51,11 @@ namespace TReminder
             var incomingChatId = update.Message.Chat.Id;
             var incomingMessage = update.Message.Text;
 
-            var upcomingMessage = update.Message.Text.Length >= 4096 ? "Your message is too long" :
-                $"You sent me the \"{incomingMessage}\" message";
+            var langCode = update.Message.From.LanguageCode;
+
+            var upcomingMessage = update.Message.Text.Length >= 4096 ?
+                GetMessage(langCode, "YourMessageIsTooLong") :
+                GetMessage(langCode, "YouSentTheMessage");
 
             await client.SendTextMessageAsync(
                 chatId: incomingChatId,
@@ -114,6 +126,30 @@ namespace TReminder
                 $"Stack trace:\n {e.StackTrace}",
                 "\n"
             };
+        }
+
+        private static void InitializeMessagesProviders()
+        {
+            _englishMessages = new MessagesProvider("en");
+            _russianMessages = new MessagesProvider("ru");
+        }
+
+        private static string GetMessage(string langCode, string messageName)
+        {
+            try
+            {
+                var props = Type.GetType(typeof(Messages).AssemblyQualifiedName).GetProperties();
+                var targetProperty = Type.GetType(typeof(Messages).AssemblyQualifiedName).
+                    GetProperties().Single(p => p.Name == messageName);
+                if (langCode == "ru")
+                    return targetProperty.GetValue(_russianMessages.Messages) as string;
+                else
+                    return targetProperty.GetValue(_englishMessages.Messages) as string;
+            }
+            catch (InvalidOperationException)
+            {
+                throw new ArgumentException("Message name not found");
+            }
         }
     }
 }

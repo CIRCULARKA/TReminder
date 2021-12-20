@@ -10,4 +10,8 @@
     <PackageReference Include="Telegram.Bot.Extensions.Polling" Version="1.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TReminder.Application\TReminder.Application.csproj" />
+  </ItemGroup>
+
 </Project>
