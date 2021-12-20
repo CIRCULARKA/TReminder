@@ -8,5 +8,7 @@ namespace TReminder.Application.Messaging
         void ChangeLanguage(string languageCode);
 
         string GetMessage(string messageName);
+
+        string this[string messageName] { get; }
     }
 }
