@@ -1,6 +1,6 @@
 using System;
 
-namespace TReminder.Application.Bot
+namespace TReminder.Application.Logging
 {
     public interface IExceptionLogger
     {
