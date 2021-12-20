@@ -18,8 +18,6 @@ namespace TReminder
         {
             try
             {
-                throw new Exception("sf");
-
                 var client = CreateBotClient();
                 await ConfigureBotCommandsAsync(client);
                 StartBotClient(client);
