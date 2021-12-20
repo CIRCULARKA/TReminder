@@ -24,8 +24,6 @@ namespace TReminder
         {
             try
             {
-                InitializeMessagesProviders();
-
                 var client = CreateBotClient();
                 await ConfigureBotCommandsAsync(client);
                 StartBotClient(client);
@@ -52,9 +50,7 @@ namespace TReminder
 
             var langCode = update.Message.From.LanguageCode;
 
-            var upcomingMessage = update.Message.Text.Length >= 4096 ?
-                GetMessage(langCode, "YourMessageIsTooLong") :
-                GetMessage(langCode, "YouSentTheMessage");
+            var upcomingMessage = "temp";
 
             await client.SendTextMessageAsync(
                 chatId: incomingChatId,
@@ -122,30 +118,6 @@ namespace TReminder
                 $"Stack trace:\n {e.StackTrace}",
                 "\n"
             };
-        }
-
-        private static void InitializeMessagesProviders()
-        {
-            _englishMessages = new MessagesProvider("en");
-            _russianMessages = new MessagesProvider("ru");
-        }
-
-        private static string GetMessage(string langCode, string messageName)
-        {
-            try
-            {
-                var props = Type.GetType(typeof(Messages).AssemblyQualifiedName).GetProperties();
-                var targetProperty = Type.GetType(typeof(Messages).AssemblyQualifiedName).
-                    GetProperties().Single(p => p.Name == messageName);
-                if (langCode == "ru")
-                    return targetProperty.GetValue(_russianMessages.Messages) as string;
-                else
-                    return targetProperty.GetValue(_englishMessages.Messages) as string;
-            }
-            catch (InvalidOperationException)
-            {
-                throw new ArgumentException("Message name not found");
-            }
         }
     }
 }

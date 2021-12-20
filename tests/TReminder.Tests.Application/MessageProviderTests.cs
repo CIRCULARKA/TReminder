@@ -12,8 +12,7 @@ namespace TReminder.Tests.Application
         public void DoesReturnInCurrentLanguage()
         {
             // Arrange
-            var russianProvider = new MessagesProvider("ru", new StreamReader("test-messages.ru.json"));
-            var englishProvider = new MessagesProvider("en", new StreamReader("test-messages.en.json"));
+            var provider = new MessagesProvider();
 
             var russianExpected = JsonSerializer.Deserialize<Messages>(
                 File.ReadAllText("test-messages.ru.json")
@@ -24,8 +23,8 @@ namespace TReminder.Tests.Application
             ).YouSentTheMessage;
 
             // Act
-            var russianActual = russianProvider.Messages.YouSentTheMessage;
-            var englishActual = englishProvider.Messages.YouSentTheMessage;
+            var russianActual = provider.GetMessage("ru", nameof(Messages.YouSentTheMessage));
+            var englishActual = provider.GetMessage("en", nameof(Messages.YouSentTheMessage));
 
             // Assert
             Assert.Equal(russianExpected, russianActual);

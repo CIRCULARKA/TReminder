@@ -25,8 +25,8 @@
   </ItemGroup>
 
   <Target Name="CopyMessageContents" AfterTargets="AfterBuild">
-    <Copy SourceFiles="TReminder.Tests.Application/test-messages.en.json" DestinationFolder="$(OutDir)" />
-    <Copy SourceFiles="TReminder.Tests.Application/test-messages.ru.json" DestinationFolder="$(OutDir)" />
+    <Copy SourceFiles="TReminder.Tests.Application/messages.en.json" DestinationFolder="$(OutDir)" />
+    <Copy SourceFiles="TReminder.Tests.Application/messages.ru.json" DestinationFolder="$(OutDir)" />
   </Target>
 
   <ItemGroup>
