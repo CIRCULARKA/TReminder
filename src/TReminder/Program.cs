@@ -25,15 +25,16 @@ namespace TReminder
         static Bot CreateBot(ITelegramBotClient client)
         {
             var now = DateTime.Now;
+            var logsDirectory = "logs";
 
-            Directory.CreateDirectory("logs");
+            Directory.CreateDirectory(logsDirectory);
 
             return new Bot(
                 client,
                 new CommandsProvider(),
                 new TextExceptionLogger(
                     new StreamWriter(
-                        $"logs/{now.Day}-{now.Month}-{now.Year}.txt",
+                        $"{logsDirectory}/{now.Day}-{now.Month}-{now.Year}.txt",
                         append: true,
                         encoding: Encoding.UTF8
                     )
