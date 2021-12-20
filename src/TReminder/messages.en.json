@@ -3,5 +3,7 @@
 	"YouSentTheMessage": "You sent the message",
 	"YourMessageIsTooLong": "Your message is too long",
 	"ChooseAnAction": "Choose an action",
-	"NewReminder": "Create new reminder"
+	"NewReminder": "Create new reminder",
+	"EditReminder": "Edit reminder",
+	"ChooseAReminder": "Choose a reminder"
 }
