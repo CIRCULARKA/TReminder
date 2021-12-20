@@ -9,4 +9,9 @@
     <ProjectReference Include="..\TReminder.Application\TReminder.Application.csproj" />
   </ItemGroup>
 
+  <Target Name="CopyMessageContents" AfterTargets="AfterBuild">
+    <Copy SourceFiles="messages.ru.json" DestinationFolder="$(OutDir)" />
+    <Copy SourceFiles="messages.en.json" DestinationFolder="$(OutDir)" />
+  </Target>
+
 </Project>
