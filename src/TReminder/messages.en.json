@@ -1,5 +1,6 @@
 {
 	"SomethingWentWrong": "Something went wrong",
 	"YouSentTheMessage": "You sent the message",
-	"YourMessageIsTooLong": "Your message is too long"
+	"YourMessageIsTooLong": "Your message is too long",
+	"ChooseAnAction": "Choose an action"
 }

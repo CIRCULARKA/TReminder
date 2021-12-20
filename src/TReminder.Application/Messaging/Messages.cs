@@ -7,5 +7,7 @@ namespace TReminder.Application.Messaging
         public string YouSentTheMessage { get; init; }
 
         public string YourMessageIsTooLong { get; init; }
+
+        public string ChooseAnAction { get; init; }
     }
 }
