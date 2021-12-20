@@ -33,7 +33,7 @@ namespace TReminder.Application.Messaging
         public void ChangeLanguage(string languageCode)
         {
             if (languageCode == null)
-                throw new ArgumentException("Language code can't be null");
+                _currentLanguageCode = "en";
 
             foreach (var code in _supportedLanguageCodes)
                 if (string.Compare(languageCode, code, ignoreCase: true) == 0)
