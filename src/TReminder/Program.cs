@@ -1,123 +1,43 @@
 ﻿using System;
-using System.Linq;
-using System.Configuration;
 using System.IO;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Text;
+using System.Configuration;
 using Telegram.Bot;
-using Telegram.Bot.Types;
-using Telegram.Bot.Types.Enums;
+using TReminder.Application.Bot;
 using TReminder.Application.Messaging;
+using TReminder.Application.Logging;
+using TReminder.Application.Commands;
 
 namespace TReminder
 {
     class Program
     {
-        private static string _pathToLogs = "logs";
-
-        private static MessagesProvider _englishMessages;
-
-        private static MessagesProvider _russianMessages;
-
-        static async Task Main(string[] args)
+        static void Main(string[] args)
         {
-            try
-            {
-                var client = CreateBotClient();
-                await ConfigureBotCommandsAsync(client);
-                StartBotClient(client);
+            var apiKey = ConfigurationManager.AppSettings["apiKey"];
+            var client = new TelegramBotClient(apiKey);
 
-            }
-            catch (Exception e)
-            {
-                LogException(FormatExceptionInformation(e));
-            }
+            CreateBot(client).Start();
 
             Console.ReadLine();
         }
 
-        public static async Task HandleUpdate(ITelegramBotClient client, Update update, CancellationToken token)
+        static Bot CreateBot(ITelegramBotClient client)
         {
-            if (update.Type != UpdateType.Message)
-                return;
+            var now = DateTime.Now;
 
-            if (update.Message!.Type != MessageType.Text)
-                return;
-
-            var incomingChatId = update.Message.Chat.Id;
-            var incomingMessage = update.Message.Text;
-
-            var langCode = update.Message.From.LanguageCode;
-
-            var upcomingMessage = "temp";
-
-            await client.SendTextMessageAsync(
-                chatId: incomingChatId,
-                text: upcomingMessage,
-                cancellationToken: token
+            return new Bot(
+                client,
+                new CommandsProvider(),
+                new TextExceptionLogger(
+                    new StreamWriter(
+                        $"logs/{now.Day}-{now.Month}-{now.Year}.txt",
+                        append: true,
+                        encoding: Encoding.UTF8
+                    )
+                ),
+                new MessagesProvider()
             );
-        }
-
-        public static Task HandleError(ITelegramBotClient client, Exception exception, CancellationToken token)
-        {
-            LogException(FormatExceptionInformation(exception));
-
-            Console.WriteLine($"Something went wrong. Error was logged in root of the application");
-
-            return Task.CompletedTask;
-        }
-
-        private static ITelegramBotClient CreateBotClient()
-        {
-            var api = ConfigurationManager.AppSettings["apiKey"];
-
-            return new TelegramBotClient(api);
-        }
-
-        private static void StartBotClient(ITelegramBotClient client)
-        {
-            client.StartReceiving(
-                HandleUpdate,
-                HandleError
-            );
-        }
-
-        private async static Task ConfigureBotCommandsAsync(ITelegramBotClient client)
-        {
-            var englishCommands = new BotCommand[] {
-                new BotCommand { Command = "new", Description = "Create new reminder" },
-                new BotCommand { Command = "list", Description = "List all reminders you have" },
-            };
-
-            var russianCommands = new BotCommand[] {
-                new BotCommand { Command = englishCommands[0].Command, Description = "Создать новое напомнинание" },
-                new BotCommand { Command = englishCommands[1].Command, Description = "Список имеющихся напоминаний" }
-            };
-
-            await client.SetMyCommandsAsync(englishCommands, languageCode: "en");
-            await client.SetMyCommandsAsync(russianCommands, languageCode: "ru");
-        }
-
-        private static void LogException(IEnumerable<string> lines)
-        {
-            System.IO.File.AppendAllLines(
-                Path.Combine(_pathToLogs, $"{DateTime.Now.Day}_{DateTime.Now.Month}_{DateTime.Now.Year}.txt"),
-                lines
-            );
-        }
-
-        private static IEnumerable<string> FormatExceptionInformation(Exception e)
-        {
-            return new string[] {
-                $"[{DateTime.Now.ToString("HH:mm MMMM dd, yyyy")}]",
-                $"Message: {e.Message}",
-                $"Assembly: {e.Source}",
-                $"Method: {e.TargetSite}",
-                e.InnerException == null ? "No inner exception" : $"Inner exception message: {e.InnerException.Message}",
-                $"Stack trace:\n {e.StackTrace}",
-                "\n"
-            };
         }
     }
 }
