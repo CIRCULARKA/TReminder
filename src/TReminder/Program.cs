@@ -26,6 +26,8 @@ namespace TReminder
         {
             var now = DateTime.Now;
 
+            Directory.CreateDirectory("logs");
+
             return new Bot(
                 client,
                 new CommandsProvider(),
