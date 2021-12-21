@@ -14,7 +14,7 @@ namespace TReminder.Application.Logging
 
         ~TextExceptionLogger()
         {
-            _writer.Close();
+            _writer.Dispose();
         }
 
         public void LogException(Exception e)
