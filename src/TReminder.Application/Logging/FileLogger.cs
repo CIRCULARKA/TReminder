@@ -13,6 +13,7 @@ namespace TReminder.Application.Logging
         public void Log(string info)
         {
             _writer.Write(info);
+            _writer.Flush();
         }
     }
 }
