@@ -24,6 +24,8 @@ namespace TReminder.Application.Bot
 
         private readonly IMessagesProvider _messagesProvider;
 
+        private readonly ILogger _logger;
+
         private long? _currentChatId;
 
         private string _currentMessage;
@@ -39,6 +41,7 @@ namespace TReminder.Application.Bot
             _commandsProvider = commandsProvider;
             _exceptionLogger = exceptionLogger;
             _messagesProvider = messagesProvider;
+            _logger = logger;
         }
 
         public void Start()
@@ -64,6 +67,12 @@ namespace TReminder.Application.Bot
                 if (_currentMessage != null)
                     if (_currentMessage.Length >= _maxMessageSize)
                     return;
+
+                _logger.Log(
+                    $"[{DateTime.Now.ToShortDateString()}]\n" +
+                    "Message: " + (update.Message == null ? "Empty message" : $"\"{update.Message.Text}\"") + "\n" +
+                    "From: " + (update.Message.From.FirstName) + "\n\n"
+                );
 
                 var upcomingMessage = _messagesProvider[nameof(Messages.ChooseAnAction)];
 
