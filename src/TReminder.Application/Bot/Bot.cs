@@ -31,8 +31,9 @@ namespace TReminder.Application.Bot
         public Bot(
             ITelegramBotClient client,
             ICommandsProvider commandsProvider,
-            IExceptionLogger exceptionLogger,
-            IMessagesProvider messagesProvider)
+            IMessagesProvider messagesProvider,
+            ILogger logger,
+            IExceptionLogger exceptionLogger)
         {
             _client = client;
             _commandsProvider = commandsProvider;
