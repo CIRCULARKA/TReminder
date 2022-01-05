@@ -48,6 +48,11 @@ namespace TReminder.Application.Messaging
 
         public string GetMessage(string messageName)
         {
+            if (_currentLanguageCode == null)
+                throw new KeyNotFoundException(
+                    $"Can't get the message as language code is not set. Call '{nameof(ChangeLanguage)}' method first"
+                );
+
             try
             {
                 var targetProperty = Type.GetType(typeof(Messages).AssemblyQualifiedName).
