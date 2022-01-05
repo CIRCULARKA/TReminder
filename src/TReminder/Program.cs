@@ -40,14 +40,14 @@ namespace TReminder
                 new MessagesProvider(),
                 new FileLogger(
                     new StreamWriter(
-                        Path.Combine(eventsFolder, now.ToString("dd-MM-yyyy") + "txt"),
+                        Path.Combine(eventsFolder, now.ToString("dd-MM-yyyy") + ".txt"),
                         append: true,
                         encoding: Encoding.UTF8
                     )
                 ),
                 new TextExceptionLogger(
                     new StreamWriter(
-                        Path.Combine(errorsFolder, now.ToString("dd-MM-yyyy") + "txt"),
+                        Path.Combine(errorsFolder, now.ToString("dd-MM-yyyy") + ".txt"),
                         append: true,
                         encoding: Encoding.UTF8
                     )
