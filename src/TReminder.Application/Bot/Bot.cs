@@ -55,12 +55,12 @@ namespace TReminder.Application.Bot
         {
             _currentChatId = update.Message?.Chat?.Id;
             _currentMessage = update.Message?.Text;
+
             var langCode = update.Message?.From?.LanguageCode;
+            _messagesProvider.ChangeLanguage(langCode);
 
             try
             {
-                _messagesProvider.ChangeLanguage(langCode);
-
                 if (update.Type != UpdateType.Message)
                     return;
 
