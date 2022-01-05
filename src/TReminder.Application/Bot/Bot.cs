@@ -80,8 +80,6 @@ namespace TReminder.Application.Bot
                     new List<InlineKeyboardButton> {
                         InlineKeyboardButton.WithCallbackData(_messagesProvider[nameof(Messages.NewReminder)], "testcallback"),
                         InlineKeyboardButton.WithCallbackData(_messagesProvider[nameof(Messages.EditReminder)], "testcallback1"),
-                        // new InlineKeyboardButton(_messagesProvider[nameof(Messages.NewReminder)]),
-                        // new InlineKeyboardButton(_messagesProvider[nameof(Messages.EditReminder)])
                     }
                 );
 
@@ -106,8 +104,6 @@ namespace TReminder.Application.Bot
         private Task HandleException(ITelegramBotClient client, Exception e, CancellationToken ct)
         {
             _exceptionLogger.LogException(e);
-
-            this.Start();
 
             return Task.CompletedTask;
         }
